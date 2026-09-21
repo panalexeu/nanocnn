@@ -17,19 +17,10 @@ def _rescale_img(img: numpy.array):
     """
     return img / 127.5 - 1.0 
 
-def _pad_img(img: numpy.array, pad: int = 3): 
-     """
-     quoting the paper: Connections extending past the boundaries of the
-     input plane take their input from a virtual background plane whose state
-     is equal to a constant, pretedetermined background level, in our case -1. 
-     """
-     return numpy.pad(img, ((0, pad), (0, pad)), mode='constant', constant_values=-1)
-
 _sample_idx = 0 
 def next_sample():
     x = numpy.array(ds['train'][_sample_idx]['image'], dtype=numpy.float32)
     x = _rescale_img(x)
-    x = _pad_img(x)
     x = torch.from_numpy(x)
     x = x.unsqueeze(0)
     y = torch.zeros(10)

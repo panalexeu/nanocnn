@@ -26,9 +26,10 @@ def _pad_img(img: numpy.array, pad: int = 3):
 
 _sample_idx = 0 
 def next_sample():
-    x = numpy.array(ds['train'][_sample_idx]['image'])
+    x = numpy.array(ds['train'][_sample_idx]['image'], dtype=numpy.float32)
     x = _rescale_img(x)
     x = _pad_img(x)
+    x = torch.from_numpy(x)
     y = torch.zeros(10)
     label = ds['train'][_sample_idx]['label']
     y[label] = 1

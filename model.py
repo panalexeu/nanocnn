@@ -12,7 +12,8 @@ class Model(nn.Module):
                 out_channels=1,
                 # paper params
                 kernel_size=5,
-                stride=2
+                stride=2, 
+                bias=True 
             ) for _ in range(h1_size)
         ])
 

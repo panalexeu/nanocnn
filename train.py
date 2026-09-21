@@ -4,6 +4,7 @@ import numpy
 import torch 
 
 from data import download_usps, get_usps, _default_path
+from model import Model
 
 if not os.path.exists(_default_path): 
         download_usps()
@@ -30,15 +31,15 @@ def next_sample():
     x = _rescale_img(x)
     x = _pad_img(x)
     x = torch.from_numpy(x)
+    x = x.unsqueeze(0)
     y = torch.zeros(10)
     label = ds['train'][_sample_idx]['label']
     y[label] = 1
     return x, y  
 
 if __name__ == '__main__': 
-    print(ds.keys())
-    print(ds['train'])
-    print(ds['test'])
+    model = Model()
     x, y = next_sample()
-    print(x) 
-    print(y)
+    print(x.shape)
+    res = model.__call__(x, y)
+    print(res.shape)

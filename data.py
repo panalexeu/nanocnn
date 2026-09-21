@@ -1,5 +1,4 @@
-from pathlib import Path
-
+"""exactly the same ds that was used in the 1989 paper"""
 from datasets import load_dataset, load_from_disk, Dataset
 
 _default_path = './data'

@@ -59,6 +59,8 @@ def test_eval(model: torch.nn.Module):
 
     return sum(mse_losses) / len(ds['test']), sum(error_rate) / len(ds['test'])
 
+def _save_model(model: torch.nn.Module, ckpt_path: str = './ckpt.pt'): 
+    torch.save(model.state_dict(), ckpt_path)
 
 _ema_loss = None
 _ema_alpha = 0.001 
@@ -68,7 +70,7 @@ def ema(loss: float) -> float:
 if __name__ == '__main__': 
     model = Model()
     optimizer = model.configure_optimizer()
-    epochs = 23 
+    epochs = 1
     train_steps = epochs * _train_size 
     loggin_steps = 1_000 
 
@@ -86,3 +88,7 @@ if __name__ == '__main__':
         if i % _train_size == 0: 
             mse_loss, error_rate = test_eval(model) 
             print(f'test set mse_loss: {mse_loss:.4f}, error_rate: {error_rate:.2f}%')
+
+    mse_loss, error_rate = test_eval(model) 
+    print(f'[final ckpt] test set mse_loss: {mse_loss:.4f}, error_rate: {error_rate:.2f}%')
+    _save_model(model)

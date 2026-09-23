@@ -1,3 +1,5 @@
+from typing import Self
+
 import torch
 import torch.nn as nn 
 
@@ -80,4 +82,11 @@ class Model(nn.Module):
 
     def configure_optimizer(self, lr=0.03): 
         return torch.optim.SGD(self.parameters(), lr=lr)
+
+    @classmethod
+    def from_pretrained(cls, ckpt_path: str = './ckpt.pt') -> Self: 
+        ckpt = torch.load(ckpt_path)
+        model = cls()
+        model.load_state_dict(ckpt)
+        return model 
     

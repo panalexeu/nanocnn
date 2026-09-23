@@ -70,7 +70,7 @@ def ema(loss: float) -> float:
 if __name__ == '__main__': 
     model = Model()
     optimizer = model.configure_optimizer()
-    epochs = 1
+    epochs = 26
     train_steps = epochs * _train_size 
     loggin_steps = 1_000 
 

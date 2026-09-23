@@ -11,10 +11,8 @@ if not os.path.exists(_default_path):
 ds = get_usps() 
 
 def _rescale_img(img: numpy.array): 
-    """
-    quoting the paper: The gray levels of each image are scaled and 
-    translated to fall within the range -1 to 1. 
-    """
+    # quoting the paper: The gray levels of each image are scaled and 
+    # translated to fall within the range -1 to 1. 
     return img / 127.5 - 1.0 
 
 _sample_idx = 0 

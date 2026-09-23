@@ -77,3 +77,7 @@ class Model(nn.Module):
             loss = nn.functional.mse_loss(x, target)
 
         return x, loss 
+
+    def configure_optimizer(self, lr=0.03): 
+        return torch.optim.SGD(self.parameters(), lr=lr)
+    

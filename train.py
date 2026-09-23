@@ -35,6 +35,31 @@ def next_sample():
 
     return x, y  
 
+
+def test_eval(model: torch.nn.Module): 
+    model.eval() 
+    mse_losses = [] 
+    error_rate = []
+
+    for i in range(len(ds['test'])): 
+        x = numpy.array(ds['test'][i]['image'], dtype=numpy.float32)
+        x = _rescale_img(x)
+        x = torch.from_numpy(x)
+        x = x.unsqueeze(0)
+
+        y = torch.ones(10) * -1 
+        label = ds['test'][i]['label']
+        y[label] = 1
+
+        out, loss = model.__call__(x, y)
+        error_rate.append(torch.argmax(out) != torch.argmax(y))
+        mse_losses.append(loss.item())
+
+    model.train()
+
+    return sum(mse_losses) / len(ds['test']), sum(error_rate) / len(ds['test'])
+
+
 _ema_loss = None
 _ema_alpha = 0.001 
 def ema(loss: float) -> float: 
@@ -56,5 +81,8 @@ if __name__ == '__main__':
         optimizer.step()
 
         if i % loggin_steps == 0: 
-             print(f'mse loss, step {i}: {loss.item():.4f} ema mse loss: {_ema_loss:.4f}')
-         
+            print(f'mse loss, step {i}: {loss.item():.4f} ema mse loss: {_ema_loss:.4f}')
+
+        if i % _train_size == 0: 
+            mse_loss, error_rate = test_eval(model) 
+            print(f'test set mse_loss: {mse_loss:.4f}, error_rate: {error_rate:.2f}%')

@@ -60,10 +60,10 @@ class Model(nn.Module):
         # quoting the paper: Connections extending past the boundaries of the
         # input plane take their input from a virtual background plane whose state
         # is equal to a constant, pretedetermined background level, in our case -1.
-        x = nn.functional.pad(x, (0, 3, 0, 3), mode='constant', value=-1)
+        x = nn.functional.pad(x, (2, 2, 2, 2), mode='constant', value=-1)
         x = self.h1(x) + self.h1_bias
         x = nn.functional.tanh(x)
-        x = nn.functional.pad(x, (0, 3, 0, 3), mode='constant', value=-1)
+        x = nn.functional.pad(x, (2, 2, 2, 2), mode='constant', value=-1)
         x = self.h2(x) + self.h2_bias 
         x = nn.functional.tanh(x)
         x = x.reshape(-1)

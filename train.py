@@ -16,14 +16,21 @@ def _rescale_img(img: numpy.array):
     return img / 127.5 - 1.0 
 
 _sample_idx = 0 
+_usps_size = len(ds['train']) 
 def next_sample():
     x = numpy.array(ds['train'][_sample_idx]['image'], dtype=numpy.float32)
     x = _rescale_img(x)
     x = torch.from_numpy(x)
     x = x.unsqueeze(0)
+
     y = torch.ones(10) * -1 
     label = ds['train'][_sample_idx]['label']
     y[label] = 1
+
+    sample_idx += 1 
+    if sample_idx > _usps_size - 1:  
+        sample_idx = 0 
+        
     return x, y  
 
 if __name__ == '__main__': 

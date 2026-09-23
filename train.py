@@ -21,7 +21,7 @@ def next_sample():
     x = _rescale_img(x)
     x = torch.from_numpy(x)
     x = x.unsqueeze(0)
-    y = torch.zeros(10)
+    y = torch.ones(10) * -1 
     label = ds['train'][_sample_idx]['label']
     y[label] = 1
     return x, y  
@@ -29,6 +29,6 @@ def next_sample():
 if __name__ == '__main__': 
     model = Model()
     x, y = next_sample()
-    print(x.shape)
     res = model.__call__(x, y)
-    print(res.shape)
+    print(y)
+    print(res)

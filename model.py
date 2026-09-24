@@ -6,8 +6,8 @@ import torch.nn as nn
 class Model(nn.Module): 
     def __init__(
         self, 
-        h1_size: int=12,
-        h2_size: int=12, 
+        h1_size: int = 12,
+        h2_size: int = 12, 
         h3_size: int = 30,
     ): 
         super().__init__()

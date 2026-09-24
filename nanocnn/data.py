@@ -4,7 +4,7 @@
 # the generalization performance. 
 from datasets import load_dataset, load_from_disk, Dataset
 
-_default_path = './data'
+_default_path = '../data'
 
 def download_usps(path: str = _default_path): 
     ds = load_dataset('flwrlabs/usps')

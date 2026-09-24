@@ -7,7 +7,7 @@ from train import _rescale_img
 
 def _load_nums() -> list[np.array]: 
     tile = 16 
-    img = Image.open('./numbers_16x16.png').convert('L')
+    img = Image.open('../numbers_16x16.png').convert('L')
     w,h = img.size 
 
     nums = []

@@ -59,7 +59,7 @@ def test_eval(model: torch.nn.Module, split: str):
 
     return sum(mse_losses) / len(ds[split]), sum(error_rate) / len(ds[split])
 
-def _save_model(model: torch.nn.Module, ckpt_path: str = './ckpt.pt'): 
+def _save_model(model: torch.nn.Module, ckpt_path: str = '../ckpt.pt'): 
     torch.save(model.state_dict(), ckpt_path)
 
 _ema_loss = None

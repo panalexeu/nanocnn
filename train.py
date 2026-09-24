@@ -68,6 +68,8 @@ def ema(loss: float) -> float:
      return _ema_alpha * loss + (1-_ema_alpha) * _ema_loss
 
 if __name__ == '__main__': 
+    torch.manual_seed(1337)
+
     model = Model()
     optimizer = model.configure_optimizer()
     epochs = 26

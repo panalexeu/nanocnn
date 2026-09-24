@@ -36,19 +36,19 @@ def next_sample():
     return x, y  
 
 
-def test_eval(model: torch.nn.Module): 
+def test_eval(model: torch.nn.Module, split: str): 
     model.eval() 
     mse_losses = [] 
     error_rate = []
 
-    for i in range(len(ds['test'])): 
-        x = numpy.array(ds['test'][i]['image'], dtype=numpy.float32)
+    for i in range(len(ds[split])): 
+        x = numpy.array(ds[split][i]['image'], dtype=numpy.float32)
         x = _rescale_img(x)
         x = torch.from_numpy(x)
         x = x.unsqueeze(0)
 
         y = torch.ones(10) * -1 
-        label = ds['test'][i]['label']
+        label = ds[split][i]['label']
         y[label] = 1
 
         out, loss = model.__call__(x, y)
@@ -57,7 +57,7 @@ def test_eval(model: torch.nn.Module):
 
     model.train()
 
-    return sum(mse_losses) / len(ds['test']), sum(error_rate) / len(ds['test'])
+    return sum(mse_losses) / len(ds[split]), sum(error_rate) / len(ds[split])
 
 def _save_model(model: torch.nn.Module, ckpt_path: str = './ckpt.pt'): 
     torch.save(model.state_dict(), ckpt_path)
@@ -88,9 +88,12 @@ if __name__ == '__main__':
             print(f'mse loss, step {i}: {loss.item():.4f} ema mse loss: {_ema_loss:.4f}')
 
         if i % _train_size == 0: 
-            mse_loss, error_rate = test_eval(model) 
+            mse_loss, error_rate = test_eval(model, 'test') 
             print(f'test set mse_loss: {mse_loss:.4f}, error_rate: {error_rate:.2f}%')
 
-    mse_loss, error_rate = test_eval(model) 
+    mse_loss, error_rate = test_eval(model, 'test') 
     print(f'[final ckpt] test set mse_loss: {mse_loss:.4f}, error_rate: {error_rate:.2f}%')
+    mse_loss, error_rate = test_eval(model, 'train') 
+    print(f'[final ckpt] train set mse_loss: {mse_loss:.4f}, error_rate: {error_rate:.2f}%')
+
     _save_model(model)

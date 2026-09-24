@@ -22,7 +22,7 @@ class Model(nn.Module):
             bias=False 
         ) 
         h1_in = 5 ** 2 # 25
-        torch.nn.init.uniform_(self.h1.weight, a=-self.init_factor / h1_in, b=self.init_factor / h1_in)
+        torch.nn.init.uniform_(self.h1.weight, a=-self.init_factor / h1_in ** 0.5, b=self.init_factor / h1_in ** 0.5)
         # quoting the paper: Thus layer H1  comprises ... but only 
         # 1068 free parameters (768 biases plus 25 times 12 feature kernels)
         self.h1_bias = nn.Parameter(torch.zeros(h1_size, 8, 8))
@@ -38,7 +38,7 @@ class Model(nn.Module):
             bias=False
         ) 
         h2_in = h1_size * h1_in # 12 * 5 * 5 = 300
-        torch.nn.init.uniform_(self.h2.weight, a=-self.init_factor / h2_in, b=self.init_factor / h2_in)
+        torch.nn.init.uniform_(self.h2.weight, a=-self.init_factor / h2_in ** 0.5, b=self.init_factor / h2_in ** 0.5)
         # quoting the paper: All these connections are controlled by only
         # 2592 free parameters (12 feature maps times 200 weights plus 192 biases). 
         self.h2_bias = nn.Parameter(torch.zeros(h2_size, 4, 4))
@@ -49,14 +49,14 @@ class Model(nn.Module):
             out_features=h3_size,
             bias=True
         )
-        torch.nn.init.uniform_(self.h3.weight, a=-self.init_factor / h3_in, b=self.init_factor / h3_in)
+        torch.nn.init.uniform_(self.h3.weight, a=-self.init_factor / h3_in ** 0.5, b=self.init_factor / h3_in ** 0.5)
 
         self.out = nn.Linear(
             in_features=h3_size, # 30
             out_features=10,
             bias=True
         ) 
-        torch.nn.init.uniform_(self.out.weight, a=-self.init_factor / h3_size, b=self.init_factor / h3_size)
+        torch.nn.init.uniform_(self.out.weight, a=-self.init_factor / h3_size ** 0.5, b=self.init_factor / h3_size ** 0.5)
 
     def __call__(self, x: torch.Tensor, target: torch.Tensor | None = None): 
         # quoting the paper: Connections extending past the boundaries of the
